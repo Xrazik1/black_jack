@@ -12,6 +12,11 @@ class Table
     @players = [player, dealer]
   end
 
+  def take_card
+    card = @deck[0]
+    @deck.delete(card)
+  end
+
   private
 
   def init_deck
