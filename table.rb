@@ -4,11 +4,12 @@ require_relative 'card'
 
 
 class Table
-  attr_reader :deck
+  attr_reader :deck, :players
 
-  def initialize
+  def initialize(player, dealer)
     @bank = 0
     @deck = init_deck
+    @players = [player, dealer]
   end
 
   private
@@ -24,8 +25,4 @@ class Table
   end
 end
 
-table = Table.new
-table.deck.each do |card|
-  puts card.value + card.suit
-end
 
