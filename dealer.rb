@@ -4,15 +4,14 @@ require_relative 'member'
 require_relative 'card'
 
 class Dealer < Member
+  attr_reader :name
+
   def initialize
     super()
+    @name = 'Дилер'
   end
 
   def make_move
 
   end
-
 end
-
-dealer = Dealer.new
-puts dealer.read_cards_sum
