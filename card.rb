@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class Card
-  attr_reader :value, :suite
+  attr_reader :value, :suit
 
   POSSIBLE_SUITS = %w[♥️ ♠️ ♣️ ♦️].freeze
   POSSIBLE_VALUES = %w[2 3 4 5 6 7 8 9 10 J Q K A].freeze
 
-  def initialize(value, suite)
+  def initialize(value, suit)
     @value = value
-    @suite = suite
+    @suit = suit
 
-    unless POSSIBLE_SUITS.include?(suite) || POSSIBLE_VALUES.include?(value)
+    unless POSSIBLE_SUITS.include?(suit) || POSSIBLE_VALUES.include?(value)
       raise 'Карту с такой мастью и достоинством создать невозможно'
     end
   end
