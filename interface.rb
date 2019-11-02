@@ -20,4 +20,15 @@ class Interface
     number
   end
 
+  def print_cards(cards)
+    cards.each do |card|
+      print "|#{card.value}#{card.suit}| "
+    end
+  end
+
+  def print_hidden_cards(cards)
+    cards.each do
+      print '|*| '
+    end
+  end
 end
