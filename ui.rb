@@ -24,6 +24,17 @@ class Ui
     puts '3. Открыть карты'
   end
 
+  def print_results(table)
+    puts 'Выскрытие карт игроков...'
+    puts "Карты дилера: #{print_cards(table.dealer.cards)}, очков: #{print_cards(table.dealer.score)}"
+    puts "Карты игрока: #{print_cards(table.player.cards)}, очков: #{print_cards(table.player.score)}"
+
+    winner = 'Ничья'
+    winner = table.current_winner.name if table.current_winner != false
+    puts 'Результаты игры'
+    puts "Победитель - #{winner}"
+  end
+
   def print_cards(cards)
     cards.each do |card|
       print "|#{card.value}#{card.suit}| "
