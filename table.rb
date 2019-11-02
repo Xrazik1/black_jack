@@ -1,16 +1,20 @@
 # frozen_string_literal: true
 
 require_relative 'card'
+require_relative 'player'
 require_relative 'dealer'
 
 class Table
   attr_reader :deck, :players
 
-  def initialize(player, dealer)
+  def initialize(player, dealer, bet)
     @bank = 0
     @deck = init_deck
     @player = player
     @dealer = dealer
+    @bet = bet
+
+    check_members_money!
   end
 
   def take_card
@@ -26,6 +30,11 @@ class Table
     @player.bank -= bet
     @dealer.bank -= bet
     @bank += bet * 2
+  end
+
+  def check_members_money!
+    raise 'У игрока недостаточно средств' if (@player.bank - @bet).negative?
+    raise 'У дилера недостаточно средств' if (@dealer.bank - @bet).negative?
   end
 
   private
