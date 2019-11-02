@@ -11,7 +11,8 @@ class Dealer < Member
     @name = 'Дилер'
   end
 
-  def make_move
-
+  def make_move(table)
+    add_card(table.take_card) if @score < 17
+    table.skip_move(self) if @score >= 17
   end
 end
