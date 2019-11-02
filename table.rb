@@ -5,17 +5,16 @@ require_relative 'player'
 require_relative 'dealer'
 
 class Table
-  attr_reader :deck, :players
+  attr_reader :deck, :players, :round
 
   def initialize(player, dealer, bet)
-    @bank = 0
-    @deck = init_deck
-    @player = player
-    @dealer = dealer
-    @bet = bet
-    @active_member = @player
-
-    check_members_money!
+    @bank           = 0
+    @round          = 1
+    @deck           = init_deck
+    @player         = player
+    @dealer         = dealer
+    @bet            = bet
+    @active_member  = @player
   end
 
   def take_card
@@ -32,6 +31,14 @@ class Table
     @player.bank -= @bet
     @dealer.bank -= @bet
     @bank += @bet * 2
+  end
+
+  def clear_table
+    @deck = init_deck
+    @round += 1
+    @active_member = @player
+
+    check_members_money!
   end
 
   def current_winner
