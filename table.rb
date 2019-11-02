@@ -23,9 +23,11 @@ class Table
     card
   end
 
-  def make_bet(bet = 10)
-    raise 'У игрока недостаточно средств для совершения ставки' if (@player.bank - bet).negative?
-    raise 'У дилера недостаточно средств для совершения ставки' if (@dealer.bank - bet).negative?
+  def make_bet
+    @player.bank -= @bet
+    @dealer.bank -= @bet
+    @bank += @bet * 2
+  end
 
     @player.bank -= bet
     @dealer.bank -= bet
