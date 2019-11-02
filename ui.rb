@@ -24,8 +24,16 @@ class Ui
     puts '3. Открыть карты'
   end
 
+  def ask_for_continue(table)
+    print "Ваше количество денег - #{table.player.bank}$, дилера - #{table.dealer.bank}"
+    puts 'Продолжить игру?(да, нет): '
+    result = gets.chomp.strip
+
+    abort('Игра завершена') if result != 'да'
+  end
+
   def print_results(table)
-    puts 'Выскрытие карт игроков...'
+    puts 'Вскрытие карт игроков...'
     puts "Карты дилера: #{print_cards(table.dealer.cards)}, очков: #{print_cards(table.dealer.score)}"
     puts "Карты игрока: #{print_cards(table.player.cards)}, очков: #{print_cards(table.player.score)}"
 
