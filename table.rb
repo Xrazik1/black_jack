@@ -29,9 +29,14 @@ class Table
     @bank += @bet * 2
   end
 
-    @player.bank -= bet
-    @dealer.bank -= bet
-    @bank += bet * 2
+  def current_winner
+    if @player.bank < @dealer.bank
+      @dealer
+    elsif @dealer.bank < @player.bank
+      @player
+    else
+      false
+    end
   end
 
   def check_members_money!
