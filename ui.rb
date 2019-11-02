@@ -24,8 +24,7 @@ class Ui
     puts '3. Открыть карты'
   end
 
-  def ask_for_continue(table)
-    print "Ваше количество денег - #{table.player.bank}$, дилера - #{table.dealer.bank}"
+  def ask_for_continue
     puts 'Продолжить игру?(да, нет): '
     result = gets.chomp.strip
 
@@ -39,8 +38,14 @@ class Ui
 
     winner = 'Ничья'
     winner = table.current_winner.name if table.current_winner != false
-    puts 'Результаты игры'
-    puts "Победитель - #{winner}"
+    puts "Результаты раунда #{table.round}:"
+    if winner == 'Ничья'
+      puts 'Произошла ничья, деньги возвращены игроку и дилеру'
+    else
+      puts "Победитель - #{winner}"
+      puts "Банк(#{table.bank}) переходит к победителю"
+    end
+    puts "Ваше количество денег - #{table.player.bank}$, дилера - #{table.dealer.bank}$"
   end
 
   def print_cards(cards)

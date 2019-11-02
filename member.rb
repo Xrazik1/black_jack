@@ -6,9 +6,9 @@ class Member
   attr_accessor :bank, :cards
 
   def initialize
-    @cards = []
-    @bank = 100
-    @score = 0
+    @cards  = []
+    @bank   = 100
+    @score  = 0
   end
 
   def add_card(card)

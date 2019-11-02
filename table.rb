@@ -5,7 +5,7 @@ require_relative 'player'
 require_relative 'dealer'
 
 class Table
-  attr_reader :deck, :players, :round
+  attr_reader :player, :dealer, :round, :bank
 
   def initialize(player, dealer, bet)
     @bank           = 0
@@ -34,17 +34,16 @@ class Table
   end
 
   def clear_table
+    @bank = 0
     @deck = init_deck
     @round += 1
     @active_member = @player
-
-    check_members_money!
   end
 
   def current_winner
-    if @player.bank < @dealer.bank
+    if @player.score < @dealer.score
       @dealer
-    elsif @dealer.bank < @player.bank
+    elsif @dealer.score < @player.score
       @player
     else
       false
@@ -52,8 +51,8 @@ class Table
   end
 
   def check_members_money!
-    raise 'У игрока недостаточно средств' if (@player.bank - @bet).negative?
-    raise 'У дилера недостаточно средств' if (@dealer.bank - @bet).negative?
+    raise 'У игрока недостаточно средств для начальной ставки' if (@player.bank - @bet).negative?
+    raise 'У дилера недостаточно средств для начальной ставки' if (@dealer.bank - @bet).negative?
   end
 
   private
