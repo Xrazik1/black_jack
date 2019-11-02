@@ -13,6 +13,7 @@ class Table
     @player = player
     @dealer = dealer
     @bet = bet
+    @active_member = @player
 
     check_members_money!
   end
@@ -21,6 +22,10 @@ class Table
     card = @deck[0]
     @deck.delete(card)
     card
+  end
+
+  def skip_move(member)
+    @active_member = member
   end
 
   def make_bet
