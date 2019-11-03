@@ -16,6 +16,9 @@ def init_game(game)
   table = Table.new(player, dealer, 10)
 
   { dealer: table.dealer, player: table.player, table: table, ui: ui }
+rescue RuntimeError => e
+  puts e.message
+  init_game(game)
 end
 
 def main(game)
@@ -24,8 +27,6 @@ def main(game)
   puts "Здравствуйте, #{game[:player].name}, добро пожаловать в игру блэкджек"
   puts "Ваш баланс: #{game[:player].bank}$"
   game[:ui].ask_for_continue(game[:table].round)
-  game[:table].make_bet
-  puts "В банк сделана ставка в размере #{game[:table].bet}$"
   puts 'Выполняется раздача карт...'
   game[:table].deal_cards(2)
   print 'Карты дилера: '
@@ -33,6 +34,9 @@ def main(game)
   print "\nВаши карты: "
   game[:ui].print_cards(game[:player].cards)
   puts "<> Сумма ваших очков: #{game[:player].score}"
+rescue RuntimeError => e
+  puts e.message
+  abort('У одного из участников закончились деньги, завершение игры')
 end
 
 main(game)
