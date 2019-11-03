@@ -27,6 +27,12 @@ def main(game)
   game[:table].make_bet
   puts "В банк сделана ставка в размере #{game[:table].bet}$"
   puts 'Выполняется раздача карт...'
+  game[:table].deal_cards(2)
+  print 'Карты дилера: '
+  game[:ui].print_hidden_cards(game[:dealer].cards)
+  print "\nВаши карты: "
+  game[:ui].print_cards(game[:player].cards)
+  puts "<> Сумма ваших очков: #{game[:player].score}"
 end
 
 main(game)
