@@ -3,7 +3,7 @@
 class Card
   attr_reader :value, :suit
 
-  POSSIBLE_SUITS = %w[♥️ ♠️ ♣️ ♦️].freeze
+  POSSIBLE_SUITS = %w[♠ ♣ ♥ ♦].freeze
   POSSIBLE_VALUES = %w[2 3 4 5 6 7 8 9 10 J Q K A].freeze
 
   def initialize(value, suit)
@@ -23,4 +23,3 @@ class Card
     return [1, 11] if POSSIBLE_VALUES[12].include?(value)
   end
 end
-
