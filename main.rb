@@ -5,7 +5,16 @@ require_relative 'dealer'
 require_relative 'player'
 require_relative 'ui'
 
-game = {}
+def run_game_process(game)
+  puts 'Выполняется раздача карт...'
+  game[:table].deal_cards(2, game[:table].player)
+  game[:table].deal_cards(2, game[:table].dealer)
+  game[:ui].show_players_cards(game)
+  puts "<> Сумма ваших очков: #{game[:table].player.score}"
+  game[:table].make_bet
+  puts "В банк сделана ставка в размере #{game[:table].bet}$, текущий размер банка: #{game[:table].bank}$"
+  make_choice(game)
+end
 
 def init_game(game)
   return game unless game.empty?
