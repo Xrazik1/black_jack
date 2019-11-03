@@ -31,21 +31,30 @@ class Ui
     abort('Игра завершена') if result != 'да'
   end
 
-  def print_results(table)
+  def handle_results(table)
     puts 'Вскрытие карт игроков...'
-    puts "Карты дилера: #{print_cards(table.dealer.cards)}, очков: #{print_cards(table.dealer.score)}"
-    puts "Карты игрока: #{print_cards(table.player.cards)}, очков: #{print_cards(table.player.score)}"
+    print 'Карты дилера: '
+    print_cards(table.dealer.cards)
+    puts "очки: #{table.dealer.score}"
+    print 'Ваши карты: '
+    print_cards(table.player.cards)
+    puts "очки: #{table.player.score}"
 
     winner = 'Ничья'
-    winner = table.current_winner.name if table.current_winner != false
+    winner = table.current_winner if table.current_winner != false
     puts "Результаты раунда #{table.round}:"
     if winner == 'Ничья'
       puts 'Произошла ничья, деньги возвращены игроку и дилеру'
+      table.player.bank += table.bank / 2
+      table.dealer.bank += table.bank / 2
     else
-      puts "Победитель - #{winner}"
-      puts "Банк(#{table.bank}) переходит к победителю"
+      puts "Победитель - #{winner.name}"
+      winner.bank += table.bank
+      puts "Банк(#{table.bank}$) переходит к победителю"
     end
     puts "Ваше количество денег - #{table.player.bank}$, дилера - #{table.dealer.bank}$"
+
+    table
   end
 
   def print_cards(cards)
