@@ -22,10 +22,10 @@ class Table
     card
   end
 
-  def deal_cards(count)
+  def deal_cards(count, member)
     count.times do
-      @dealer.add_card(take_card)
-      @player.add_card(take_card)
+      @dealer.add_card(take_card) if member.instance_of?(Dealer)
+      @player.add_card(take_card) if member.instance_of?(Player)
     end
   end
 
@@ -39,13 +39,15 @@ class Table
     @bank = 0
     @deck = init_deck
     @round += 1
-    @active_member = @player
+    @player.clear_hands
+    @dealer.clear_hands
+    puts @player.cards.inspect
   end
 
   def current_winner
-    if @player.score < @dealer.score
+    if @player.score < @dealer.score && @dealer.score < 21
       @dealer
-    elsif @dealer.score < @player.score
+    elsif @dealer.score < @player.score && @player.score < 21
       @player
     else
       false
@@ -69,5 +71,3 @@ class Table
     deck.shuffle
   end
 end
-
-
