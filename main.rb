@@ -65,6 +65,15 @@ rescue RuntimeError => e
   make_choice(game)
 end
 
+def game_repeater(game)
+  game[:table].clear_table
+  game[:table].check_members_money!
+
+  puts "Ваш баланс: #{game[:table].player.bank}$"
+  game[:ui].ask_for_continue(game[:table].round)
+  game_repeater(run_game_process(game))
+end
+
 def main(game)
   game = init_game(game)
 
