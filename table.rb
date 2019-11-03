@@ -14,7 +14,6 @@ class Table
     @player         = player
     @dealer         = dealer
     @bet            = bet
-    @active_member  = @player
   end
 
   def take_card
@@ -28,10 +27,6 @@ class Table
       @dealer.add_card(take_card)
       @player.add_card(take_card)
     end
-  end
-
-  def skip_move(member)
-    @active_member = member
   end
 
   def make_bet
