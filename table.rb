@@ -45,13 +45,14 @@ class Table
   end
 
   def current_winner
-    if @player.score < @dealer.score && @dealer.score < 21
-      @dealer
-    elsif @dealer.score < @player.score && @player.score < 21
-      @player
-    else
-      false
-    end
+    return false if @player.score == @dealer.score
+    return false if @player.score > 21 && @dealer.score > 21
+
+    return @dealer if @player.score > 21
+    return @player if @dealer.score > 21
+
+    return @dealer if (21 - @dealer.score) < (21 - @player.score)
+    return @player if (21 - @player.score) < (21 - @dealer.score)
   end
 
   def check_members_money!
