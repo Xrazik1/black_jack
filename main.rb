@@ -21,6 +21,20 @@ rescue RuntimeError => e
   init_game(game)
 end
 
+def make_choice(game)
+  game[:ui].print_steps
+  choice = game[:ui].take_menu_number(1..3)
+
+  game[:player].add_card(game[:table].take_card) if choice == 1
+  game[:dealer].make_move(game[:table]) if choice == 2
+  game[:ui].print_results(game[:table]) if choice == 3
+
+  game
+rescue RuntimeError => e
+  print e.message
+  make_choice(game)
+end
+
 def main(game)
   game = init_game(game)
 
