@@ -18,6 +18,13 @@ class Ui
     number
   end
 
+  def show_players_cards(game)
+    print 'Карты дилера: '
+    print_hidden_cards(game[:table].dealer.cards)
+    print "\nВаши карты: "
+    print_cards(game[:table].player.cards)
+  end
+
   def print_steps
     puts '1. Добавить карту'
     puts '2. Пропустить ход'
