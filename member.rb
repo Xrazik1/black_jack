@@ -34,8 +34,8 @@ class Member
     aces.each do |ace|
       worth1 = ace.card_worth('A')[0]
       worth2 = ace.card_worth('A')[1]
-      sum += worth1 if sum + worth1 > 21
-      sum += worth2 if sum + worth2 < 21
+      sum += worth1 if sum + worth2 > 21
+      sum += worth2 if sum + worth2 <= 21
     end
     sum
   end
