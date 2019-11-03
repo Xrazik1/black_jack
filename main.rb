@@ -30,6 +30,27 @@ rescue RuntimeError => e
   init_game(game)
 end
 
+def choice_handler(choice, game)
+  if choice == 1
+    game[:table].deal_cards(1, game[:table].player)
+    puts 'Вы добавили карту'
+    game[:ui].show_players_cards(game)
+    puts "<> Сумма ваших очков: #{game[:table].player.score}"
+
+    { continue?: true, game: game }
+  elsif choice == 2
+    game[:table].dealer.make_move(game[:table])
+    game[:ui].show_players_cards(game)
+    puts "<> Сумма ваших очков: #{game[:table].player.score}"
+
+    { continue?: true, game: game }
+  elsif choice == 3
+    game[:table] = game[:ui].handle_results(game[:table])
+
+    { continue?: false, game: game }
+  end
+end
+
 def make_choice(game)
   game[:ui].print_steps
   choice = game[:ui].take_menu_number(1..3)
