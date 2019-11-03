@@ -3,7 +3,7 @@
 require_relative 'card'
 
 class Member
-  attr_accessor :bank, :cards
+  attr_accessor :bank, :cards, :score
 
   def initialize
     @cards  = []
@@ -16,25 +16,26 @@ class Member
     @score = calc_cards_sum
   end
 
-  def remove_card(card)
-    @cards.delete(card)
-    @score = calc_cards_sum
+  def clear_hands
+    @cards = []
+    @score = 0
   end
 
   def calc_cards_sum
     sum = 0
+    aces = @cards.select { |card| card.value == 'A' }
     (@cards.reject { |card| card.value == 'A' }).each { |card| sum += card.card_worth(card.value) }
-    sum + calc_aces_sum(sum)
+    include_aces_sum(aces, sum)
   end
 
   private
 
-  def calc_aces_sum(init_sum)
-    sum = 0
-    if init_sum + 11 > 21
-      (@cards.select { |card| card.value == 'A' }).each { |ace| sum += ace.card_worth('A')[0] }
-    else
-      (@cards.select { |card| card.value == 'A' }).each { |ace| sum += ace.card_worth('A')[1] }
+  def include_aces_sum(aces, sum)
+    aces.each do |ace|
+      worth1 = ace.card_worth('A')[0]
+      worth2 = ace.card_worth('A')[1]
+      sum += worth1 if sum + worth1 > 21
+      sum += worth2 if sum + worth2 < 21
     end
     sum
   end
