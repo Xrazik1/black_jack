@@ -24,7 +24,7 @@ def init_game(game)
   player = Player.new(ui.take_name)
   table = Table.new(player, dealer, 10)
 
-  { dealer: table.dealer, player: table.player, table: table, ui: ui }
+  { table: table, ui: ui }
 rescue RuntimeError => e
   puts e.message
   init_game(game)
@@ -54,14 +54,12 @@ end
 def make_choice(game)
   game[:ui].print_steps
   choice = game[:ui].take_menu_number(1..3)
+  game_result = choice_handler(choice, game)
+  make_choice(game) unless game_result[:continue?] == false
 
-  game[:player].add_card(game[:table].take_card) if choice == 1
-  game[:dealer].make_move(game[:table]) if choice == 2
-  game[:ui].print_results(game[:table]) if choice == 3
-
-  game
+  game_result[:game]
 rescue RuntimeError => e
-  print e.message
+  puts e.message
   make_choice(game)
 end
 
@@ -77,19 +75,14 @@ end
 def main(game)
   game = init_game(game)
 
-  puts "Здравствуйте, #{game[:player].name}, добро пожаловать в игру блэкджек"
-  puts "Ваш баланс: #{game[:player].bank}$"
+  puts "Здравствуйте, #{game[:table].player.name}, добро пожаловать в игру блэкджек"
+  puts "Ваш баланс: #{game[:table].player.bank}$"
   game[:ui].ask_for_continue(game[:table].round)
-  puts 'Выполняется раздача карт...'
-  game[:table].deal_cards(2)
-  print 'Карты дилера: '
-  game[:ui].print_hidden_cards(game[:dealer].cards)
-  print "\nВаши карты: "
-  game[:ui].print_cards(game[:player].cards)
-  puts "<> Сумма ваших очков: #{game[:player].score}"
+
+  game_repeater(run_game_process(game))
 rescue RuntimeError => e
   puts e.message
   abort('У одного из участников закончились деньги, завершение игры')
 end
 
-main(game)
+main({})
