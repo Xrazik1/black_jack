@@ -5,7 +5,7 @@ require_relative 'player'
 require_relative 'dealer'
 
 class Table
-  attr_reader :player, :dealer, :round, :bank
+  attr_reader :player, :dealer, :round, :bank, :bet
 
   def initialize(player, dealer, bet)
     @bank           = 0
@@ -21,6 +21,13 @@ class Table
     card = @deck[0]
     @deck.delete(card)
     card
+  end
+
+  def deal_cards(count)
+    count.times do
+      @dealer.add_card(take_card)
+      @player.add_card(take_card)
+    end
   end
 
   def skip_move(member)
