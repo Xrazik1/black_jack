@@ -10,10 +10,10 @@ class Ui
   end
 
   def take_menu_number(numbers)
-    print 'Выберите пункт меню'
+    print 'Выберите пункт меню: '
     number = gets.chomp.to_i
     raise 'Пункт меню не может быть пустым' if number.nil?
-    raise 'Такого пункта меню не существует' if numbers.include?(number)
+    raise 'Такого пункта меню не существует' unless numbers.include?(number)
 
     number
   end
@@ -31,9 +31,9 @@ class Ui
     puts '3. Открыть карты'
   end
 
-  def ask_for_continue
-    puts 'Продолжить игру?(да, нет): '
-    result = gets.chomp.strip
+  def ask_for_continue(round)
+    print "Начать раунд #{round}?(да, нет): "
+    result = gets.chomp
 
     abort('Игра завершена') if result != 'да'
   end
