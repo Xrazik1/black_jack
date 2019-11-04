@@ -28,7 +28,7 @@ def init_game(game)
 
   { table: table, ui: ui }
 rescue RuntimeError => e
-  puts e.message
+  ui.show_error_message(e.message)
   init_game(game)
 end
 
@@ -83,7 +83,7 @@ def make_choice(game)
     game_result[:game]
   end
 rescue RuntimeError => e
-  puts e.message
+  game[:ui].show_error_message(e.message)
   make_choice(game)
 end
 
@@ -104,8 +104,7 @@ def main(game)
 
   game_repeater(run_game_process(game))
 rescue RuntimeError => e
-  puts e.message
-  game[:ui].show_error_message('У одного из игроков закончились деньги, завершение игры')
+  game[:ui].show_error_message("#{e.message}, завершение игры")
   abort
 end
 
