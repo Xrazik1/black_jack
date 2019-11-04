@@ -9,6 +9,30 @@ class Ui
     name
   end
 
+  def show_player_score(score)
+    puts "<> Сумма ваших очков: #{score}"
+  end
+
+  def show_player_balance(balance)
+    puts "Ваш баланс: #{balance}$"
+  end
+
+  def show_greeting(name)
+    puts "Здравствуйте, #{name}, добро пожаловать в игру блэкджек"
+  end
+
+  def show_error_message(message)
+    puts "! #{message} !"
+  end
+
+  def show_step_info(info)
+    puts "Ход: #{info}"
+  end
+
+  def show_bet_info(table)
+    puts "В банк сделана ставка в размере #{table.bet}$, текущий размер банка: #{table.bank}$"
+  end
+
   def take_menu_number(numbers)
     print 'Выберите пункт меню: '
     number = gets.chomp.to_i
@@ -18,11 +42,11 @@ class Ui
     number
   end
 
-  def show_players_cards(game)
+  def show_players_cards(table)
     print 'Карты дилера: '
-    print_hidden_cards(game[:table].dealer.cards)
+    print_hidden_cards(table.dealer.cards)
     print "\nВаши карты: "
-    print_cards(game[:table].player.cards)
+    print_cards(table.player.cards)
   end
 
   def print_steps
@@ -39,7 +63,8 @@ class Ui
   end
 
   def handle_results(table)
-    puts "----------\nВскрытие карт игроков..."
+    puts "Вскрытие карт игроков...\n----------"
+    sleep(1)
     print 'Карты дилера: '
     print_cards(table.dealer.cards)
     puts "очки: #{table.dealer.score}"

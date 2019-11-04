@@ -6,13 +6,15 @@ require_relative 'player'
 require_relative 'ui'
 
 def run_game_process(game)
-  puts 'Выполняется раздача карт...'
+  sleep(1)
   game[:table].deal_cards(2, game[:table].player)
   game[:table].deal_cards(2, game[:table].dealer)
-  game[:ui].show_players_cards(game)
-  puts "<> Сумма ваших очков: #{game[:table].player.score}"
+  game[:ui].show_players_cards(game[:table])
+  game[:ui].show_player_score(game[:table].player.score)
   game[:table].make_bet
-  puts "В банк сделана ставка в размере #{game[:table].bet}$, текущий размер банка: #{game[:table].bank}$"
+  sleep(1)
+  game[:ui].show_bet_info(game[:table])
+
   make_choice(game)
 end
 
@@ -33,27 +35,29 @@ end
 def choice_handler(choice, game)
   if choice == 1
     game[:table].deal_cards(1, game[:table].player)
-    puts 'Вы добавили карту'
+    game[:ui].show_step_info('Вы добавили карту')
 
     if game[:table].dealer.make_move(game[:table]) == 'skip'
-      puts 'Дилер пропускает ход'
+      game[:ui].show_step_info('Дилер пропускает ход')
     else
-      puts 'Дилер берёт карту'
+      game[:ui].show_step_info('Дилер берёт карту')
     end
+    sleep(1)
 
-    game[:ui].show_players_cards(game)
-    puts "<> Сумма ваших очков: #{game[:table].player.score}"
+    game[:ui].show_players_cards(game[:table])
+    game[:ui].show_player_score(game[:table].player.score)
 
     { continue?: true, game: game }
   elsif choice == 2
     if game[:table].dealer.make_move(game[:table]) == 'skip'
-      puts 'Дилер пропускает ход'
+      game[:ui].show_step_info('Дилер пропускает ход')
     else
-      puts 'Дилер берёт карту'
+      game[:ui].show_step_info('Дилер берёт карту')
     end
+    sleep(1)
 
-    game[:ui].show_players_cards(game)
-    puts "<> Сумма ваших очков: #{game[:table].player.score}"
+    game[:ui].show_players_cards(game[:table])
+    game[:ui].show_player_score(game[:table].player.score)
 
     { continue?: true, game: game }
   elsif choice == 3
@@ -65,7 +69,8 @@ end
 
 def make_choice(game)
   if game[:table].player.cards.size > 2
-    puts 'Игроки достигли максимального колличества карт'
+    game[:ui].show_error_message('Игроки достигли максимального колличества карт')
+    sleep(1)
     game[:table] = game[:ui].handle_results(game[:table])
 
     game
@@ -86,7 +91,6 @@ def game_repeater(game)
   game[:table].clear_table
   game[:table].check_members_money!
 
-  puts "Ваш баланс: #{game[:table].player.bank}$"
   game[:ui].ask_for_continue(game[:table].round)
   game_repeater(run_game_process(game))
 end
@@ -94,14 +98,15 @@ end
 def main(game)
   game = init_game(game)
 
-  puts "Здравствуйте, #{game[:table].player.name}, добро пожаловать в игру блэкджек"
-  puts "Ваш баланс: #{game[:table].player.bank}$"
+  game[:ui].show_greeting(game[:table].player.name)
+  game[:ui].show_player_balance(game[:table].player.bank)
   game[:ui].ask_for_continue(game[:table].round)
 
   game_repeater(run_game_process(game))
 rescue RuntimeError => e
   puts e.message
-  abort('У одного из участников закончились деньги, завершение игры')
+  game[:ui].show_error_message('У одного из игроков закончились деньги, завершение игры')
+  abort
 end
 
 main({})
