@@ -34,12 +34,24 @@ def choice_handler(choice, game)
   if choice == 1
     game[:table].deal_cards(1, game[:table].player)
     puts 'Вы добавили карту'
+
+    if game[:table].dealer.make_move(game[:table]) == 'skip'
+      puts 'Дилер пропускает ход'
+    else
+      puts 'Дилер берёт карту'
+    end
+
     game[:ui].show_players_cards(game)
     puts "<> Сумма ваших очков: #{game[:table].player.score}"
 
     { continue?: true, game: game }
   elsif choice == 2
-    game[:table].dealer.make_move(game[:table])
+    if game[:table].dealer.make_move(game[:table]) == 'skip'
+      puts 'Дилер пропускает ход'
+    else
+      puts 'Дилер берёт карту'
+    end
+
     game[:ui].show_players_cards(game)
     puts "<> Сумма ваших очков: #{game[:table].player.score}"
 
