@@ -52,12 +52,19 @@ def choice_handler(choice, game)
 end
 
 def make_choice(game)
-  game[:ui].print_steps
-  choice = game[:ui].take_menu_number(1..3)
-  game_result = choice_handler(choice, game)
-  make_choice(game) unless game_result[:continue?] == false
+  if game[:table].player.cards.size > 2
+    puts 'Игроки достигли максимального колличества карт'
+    game[:table] = game[:ui].handle_results(game[:table])
 
-  game_result[:game]
+    game
+  else
+    game[:ui].print_steps
+    choice = game[:ui].take_menu_number(1..3)
+    game_result = choice_handler(choice, game)
+    make_choice(game) unless game_result[:continue?] == false
+
+    game_result[:game]
+  end
 rescue RuntimeError => e
   puts e.message
   make_choice(game)
