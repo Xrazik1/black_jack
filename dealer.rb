@@ -13,6 +13,6 @@ class Dealer < Member
 
   def make_move(table)
     table.deal_cards(1, self) if (@score < 17) && (cards.size < 3)
-    'skip' if @score > 17
+    'skip' if @score >= 17
   end
 end
