@@ -39,7 +39,7 @@ class Ui
   end
 
   def handle_results(table)
-    puts 'Вскрытие карт игроков...'
+    puts "----------\nВскрытие карт игроков..."
     print 'Карты дилера: '
     print_cards(table.dealer.cards)
     puts "очки: #{table.dealer.score}"
@@ -59,6 +59,7 @@ class Ui
       winner.bank += table.bank
       puts "Банк(#{table.bank}$) переходит к победителю"
     end
+    puts '----------'
     puts "Ваше количество денег - #{table.player.bank}$, дилера - #{table.dealer.bank}$"
 
     table

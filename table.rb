@@ -41,7 +41,6 @@ class Table
     @round += 1
     @player.clear_hands
     @dealer.clear_hands
-    puts @player.cards.inspect
   end
 
   def current_winner
