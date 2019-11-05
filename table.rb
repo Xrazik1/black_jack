@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'card'
 require_relative 'player'
 require_relative 'dealer'
+require_relative 'deck'
 
 class Table
   attr_reader :player, :dealer, :round, :bank, :bet
@@ -10,16 +10,14 @@ class Table
   def initialize(player, dealer, bet)
     @bank           = 0
     @round          = 1
-    @deck           = init_deck
+    @deck           = Deck.new
     @player         = player
     @dealer         = dealer
     @bet            = bet
   end
 
   def take_card
-    card = @deck[0]
-    @deck.delete(card)
-    card
+    @deck.take_first_card
   end
 
   def deal_cards(count, member)
@@ -37,15 +35,15 @@ class Table
 
   def clear_table
     @bank = 0
-    @deck = init_deck
+    @deck = Deck.new
     @round += 1
     @player.clear_hands
     @dealer.clear_hands
   end
 
   def current_winner
-    return false if @player.score == @dealer.score
-    return false if @player.score > 21 && @dealer.score > 21
+    return nil if @player.score == @dealer.score
+    return nil if @player.score > 21 && @dealer.score > 21
 
     return @dealer if @player.score > 21
     return @player if @dealer.score > 21
@@ -57,17 +55,5 @@ class Table
   def check_members_money!
     raise 'У игрока недостаточно средств для начальной ставки' if (@player.bank - @bet).negative?
     raise 'У дилера недостаточно средств для начальной ставки' if (@dealer.bank - @bet).negative?
-  end
-
-  private
-
-  def init_deck
-    deck = []
-    Card::POSSIBLE_VALUES.each do |value|
-      Card::POSSIBLE_SUITS.each do |suit|
-        deck << Card.new(value, suit)
-      end
-    end
-    deck.shuffle
   end
 end
