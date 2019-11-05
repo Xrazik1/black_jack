@@ -22,9 +22,17 @@ class Table
 
   def deal_cards(count, member)
     count.times do
-      @dealer.add_card(take_card) if member.instance_of?(Dealer)
-      @player.add_card(take_card) if member.instance_of?(Player)
+      member.add_card(take_card)
     end
+  end
+
+  def split_prize
+    @dealer.bank += @bank / 2
+    @player.bank += @bank / 2
+  end
+
+  def give_prize(member)
+    member.bank += @bank
   end
 
   def make_bet
