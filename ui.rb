@@ -11,6 +11,7 @@ class Ui
 
   def show_player_score(score)
     puts "<> Сумма ваших очков: #{score}"
+    sleep(1)
   end
 
   def show_player_balance(balance)
@@ -27,6 +28,7 @@ class Ui
 
   def show_step_info(info)
     puts "Ход: #{info}"
+    sleep(1)
   end
 
   def show_bet_info(table)

@@ -6,13 +6,11 @@ require_relative 'player'
 require_relative 'ui'
 
 def run_game_process(game)
-  sleep(1)
   game[:table].deal_cards(2, game[:table].player)
   game[:table].deal_cards(2, game[:table].dealer)
   game[:ui].show_players_cards(game[:table])
   game[:ui].show_player_score(game[:table].player.score)
   game[:table].make_bet
-  sleep(1)
   game[:ui].show_bet_info(game[:table])
 
   make_choice(game)
@@ -42,7 +40,6 @@ def choice_handler(choice, game)
     else
       game[:ui].show_step_info('Дилер берёт карту')
     end
-    sleep(1)
 
     game[:ui].show_players_cards(game[:table])
     game[:ui].show_player_score(game[:table].player.score)
@@ -54,7 +51,6 @@ def choice_handler(choice, game)
     else
       game[:ui].show_step_info('Дилер берёт карту')
     end
-    sleep(1)
 
     game[:ui].show_players_cards(game[:table])
     game[:ui].show_player_score(game[:table].player.score)
@@ -70,7 +66,6 @@ end
 def make_choice(game)
   if game[:table].player.cards.size > 2
     game[:ui].show_error_message('Игроки достигли максимального колличества карт')
-    sleep(1)
     game[:table] = game[:ui].handle_results(game[:table])
 
     game
