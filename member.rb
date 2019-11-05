@@ -24,7 +24,7 @@ class Member
   def calc_cards_sum
     sum = 0
     aces = @cards.select { |card| card.value == 'A' }
-    (@cards.reject { |card| card.value == 'A' }).each { |card| sum += card.card_worth(card.value) }
+    (@cards.reject { |card| card.value == 'A' }).each { |card| sum += card.worth }
     include_aces_sum(aces, sum)
   end
 
@@ -32,10 +32,10 @@ class Member
 
   def include_aces_sum(aces, sum)
     aces.each do |ace|
-      worth1 = ace.card_worth('A')[0]
-      worth2 = ace.card_worth('A')[1]
-      sum += worth1 if sum + worth2 > 21
-      sum += worth2 if sum + worth2 <= 21
+      min = ace.worth[:min]
+      max = ace.worth[:max]
+      sum += min if sum + max > 21
+      sum += max if sum + max <= 21
     end
     sum
   end
