@@ -75,15 +75,14 @@ class Ui
     puts "очки: #{table.player.score}"
 
     winner = 'Ничья'
-    winner = table.current_winner if table.current_winner != false
+    winner = table.current_winner unless table.current_winner.nil?
     puts "Результаты раунда #{table.round}:"
     if winner == 'Ничья'
       puts 'Произошла ничья, деньги возвращены игроку и дилеру'
-      table.player.bank += table.bank / 2
-      table.dealer.bank += table.bank / 2
+      table.split_prize
     else
       puts "Победитель - #{winner.name}"
-      winner.bank += table.bank
+      table.give_prize(winner)
       puts "Банк(#{table.bank}$) переходит к победителю"
     end
     puts '----------'
