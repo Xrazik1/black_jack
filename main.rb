@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'table'
-require_relative 'dealer'
-require_relative 'player'
-require_relative 'ui'
+require_relative 'game'
 
 def run_game_process(game)
   game[:table].deal_cards(2, game[:table].player)
@@ -14,20 +11,6 @@ def run_game_process(game)
   game[:ui].show_bet_info(game[:table])
 
   make_choice(game)
-end
-
-def init_game(game)
-  return game unless game.empty?
-
-  ui = Ui.new
-  dealer = Dealer.new
-  player = Player.new(ui.take_name)
-  table = Table.new(player, dealer, 10)
-
-  { table: table, ui: ui }
-rescue RuntimeError => e
-  ui.show_error_message(e.message)
-  init_game(game)
 end
 
 def choice_handler(choice, game)
@@ -79,7 +62,7 @@ def make_choice(game)
   end
 rescue RuntimeError => e
   game[:ui].show_error_message(e.message)
-  make_choice(game)
+  retry
 end
 
 def game_repeater(game)
@@ -90,8 +73,9 @@ def game_repeater(game)
   game_repeater(run_game_process(game))
 end
 
-def main(game)
-  game = init_game(game)
+def main
+  game = Game.new
+  game = game.controller
 
   game[:ui].show_greeting(game[:table].player.name)
   game[:ui].show_player_balance(game[:table].player.bank)
@@ -103,4 +87,4 @@ rescue RuntimeError => e
   abort
 end
 
-main({})
+main
